@@ -2,19 +2,22 @@ const sass = require('node-sass');
 const fs = require('fs');
 const fileType = require('file-type');
 
-const base64EncodeImage = (url) => {
-  const binary = fs.readFileSync(url);
-  const { mime } = fileType(binary);
-  const encodedString = new Buffer(binary).toString('base64');
+const asyncBase64Encode = (url, cb) => {
+  fs.readFile(url, (err, data) => {
+    if (err) throw err;
 
-  return `data:${mime};base64,${encodedString}`;
+    const { mime } = fileType(data);
+    const encodedString = new Buffer(data).toString('base64');
+
+    cb(`data:${mime};base64,${encodedString}`);
+  });
 };
 
 module.exports = {
-  'encodeDataUri($url)': function(url) {
-    const dataUri = base64EncodeImage(url.getValue());
-    const out = new sass.types.String(dataUri);
-
-    return out;
+  'encodeDataUri($url)': function(url, done) {
+    asyncBase64Encode(url.getValue(), (dataUri) => {
+      const out = new sass.types.String(dataUri);
+      done(out);
+    });
   },
 };

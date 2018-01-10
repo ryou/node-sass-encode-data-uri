@@ -1,0 +1,17 @@
+{
+  "name": "node-sass-encode-data-uri",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "gulp sass",
+    "watch": "gulp"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "file-type": "^7.4.0",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.1.0"
+  }
+}
